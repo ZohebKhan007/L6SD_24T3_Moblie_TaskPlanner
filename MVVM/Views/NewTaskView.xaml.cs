@@ -53,6 +53,25 @@ namespace TaskPlanner.MVVM.Views
                 await viewModel.AddCategoryAsync(newCategory);
             }
         }
-    }
 
+        private async void DeleteCategoryClicked(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            if (button != null)
+            {
+                int categoryId = (int)button.CommandParameter;
+                var category = viewModel.Categories.FirstOrDefault(c => c.Id == categoryId);
+
+                if (category != null)
+                {
+                    bool confirm = await DisplayAlert("Delete Category", $"Are you sure you want to delete the category '{category.CategoryName}'?", "Yes", "No");
+
+                    if (confirm)
+                    {
+                        await viewModel.DeleteCategoryAsync(category);
+                    }
+                }
+            }
+        }
+    }
 }
