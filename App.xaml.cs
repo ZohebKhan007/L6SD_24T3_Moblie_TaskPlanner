@@ -8,7 +8,7 @@ namespace TaskPlanner
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(serviceProvider.GetRequiredService<MainView>());
+            MainPage = new NavigationPage(serviceProvider.GetRequiredService<LandingPage>());
         }
     }
 }
