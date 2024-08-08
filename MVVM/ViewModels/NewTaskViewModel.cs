@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using TaskPlanner.MVVM.Models;
 using TaskPlanner.Services;
 
@@ -25,11 +25,28 @@ namespace TaskPlanner.MVVM.ViewModels
             Tasks.Add(task);
         }
 
+        public async Task DeleteTaskAsync(MyTask task)
+        {
+            await _databaseService.DeleteTaskAsync(task);
+            Tasks.Remove(task);
+        }
+
         public async Task AddCategoryAsync(Category category)
         {
             await _databaseService.SaveCategoryAsync(category);
             Categories.Add(category);
         }
-    }
 
+        public async Task DeleteCategoryAsync(Category category)
+        {
+            var tasksToDelete = Tasks.Where(t => t.CategoryID == category.Id).ToList();
+            foreach (var task in tasksToDelete)
+            {
+                await DeleteTaskAsync(task);
+            }
+
+            await _databaseService.DeleteCategoryAsync(category);
+            Categories.Remove(category);
+        }
+    }
 }
