@@ -25,6 +25,7 @@
                             <VerticalStackLayout Padding="15" Spacing="10">
                                 <Label StyleClass="LightBlue" Text="{Binding PendingTasks, StringFormat='{0} Tasks'}"/>
                                 <Label StyleClass="DarkBlue, CardTitle" Text="{Binding CategoryName}"/>
+                                <Label StyleClass="LightBlue" Text="{Binding Percentage, StringFormat='{0:P}'}"/>
                                 <ProgressBar Progress="{Binding Percentage}" ProgressColor="{Binding Color, Converter={StaticResource ColorConverter}}"/>
                             </VerticalStackLayout>
                         </Grid>
@@ -35,18 +36,25 @@
         <Grid Grid.Row="2" RowDefinitions=".2*, .8*">
             <Label StyleClass="LightBlue, SubHeader" Text="PENDING TASKS"/>
             <CollectionView Grid.Row="1" ItemsSource="{Binding Tasks}"
-                            ItemsUpdatingScrollMode="KeepLastItemInView">
+                ItemsUpdatingScrollMode="KeepItemsInView">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame BackgroundColor="Transparent">
-                            <HorizontalStackLayout>
+                            <Grid ColumnDefinitions="Auto, *, Auto">
+                                <!-- Checkbox -->
                                 <CheckBox
                                     x:Name="checkBox"
                                     IsChecked="{Binding Completed}"
                                     VerticalOptions="Center"
+                                    HorizontalOptions="Start"
                                     CheckedChanged="checkBox_CheckedChanged"
                                     Color="{Binding TaskColor, Converter={StaticResource ColorConverter}}"/>
-                                <Label Text="{Binding TaskName}" VerticalOptions="Center">
+
+                                <!-- Task Name Label -->
+                                <Label Grid.Column="1"
+                                   Text="{Binding TaskName}" 
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Start">
                                     <Label.Triggers>
                                         <DataTrigger
                                             Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}"
@@ -56,7 +64,14 @@
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
-                            </HorizontalStackLayout>
+
+                                <!-- Delete Button -->
+                                <Button Grid.Column="2" 
+                                    Text="Delete" 
+                                    HorizontalOptions="End" 
+                                    Clicked="DeleteTaskClicked"
+                                    CommandParameter="{Binding .}" />
+                            </Grid>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
