@@ -1,4 +1,4 @@
-﻿using PropertyChanged;
+using PropertyChanged;
 using System.Collections.ObjectModel;
 using TaskPlanner.MVVM.Models;
 using TaskPlanner.Services;
@@ -8,7 +8,8 @@ namespace TaskPlanner.MVVM.ViewModels
     [AddINotifyPropertyChangedInterface]
     public class MainViewModels
     {
-        public DatabaseService DatabaseService { get; }
+
+        public DatabaseService DatabaseService { get; set; }
 
         public ObservableCollection<Category> Categories { get; set; }
         public ObservableCollection<MyTask> Tasks { get; set; }
@@ -51,29 +52,26 @@ namespace TaskPlanner.MVVM.ViewModels
         {
             foreach (var c in Categories)
             {
-                var tasks = from t in Tasks
-                            where t.CategoryID == c.Id
-                            select t;
+                var tasks = Tasks.Where(t => t.CategoryID == c.Id);
+                var completed = tasks.Where(t => t.Completed).Count();
+                var totalTasks = tasks.Count();
 
-                var completed = from t in tasks
-                                where t.Completed == true
-                                select t;
-
-                var notCompleted = from t in tasks
-                                   where t.Completed == false
-                                   select t;
-
-                c.PendingTasks = notCompleted.Count();
-                c.Percentage = (float)completed.Count() / (float)tasks.Count();
+                c.PendingTasks = totalTasks - completed;
+                c.Percentage = totalTasks == 0 ? 0 : (float)completed / totalTasks;
             }
             foreach (var t in Tasks)
             {
-                var catColor =
-                    (from c in Categories
-                     where c.Id == t.CategoryID
-                     select c.Color).FirstOrDefault();
+                var catColor = Categories.FirstOrDefault(c => c.Id == t.CategoryID)?.Color;
                 t.TaskColor = catColor;
             }
+        }
+
+        public async Task DeleteTaskAsync(MyTask task)
+        {
+            if (task == null) return;
+            await DatabaseService.DeleteTaskAsync(task);
+            Tasks.Remove(task);
+            UpdateData();
         }
     }
 }
