@@ -1,15 +1,14 @@
-﻿using PropertyChanged;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PropertyChanged;
+using SQLite;
 
 namespace TaskPlanner.MVVM.Models
 {
     [AddINotifyPropertyChangedInterface]
     public class MyTask
     {
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+
         public string TaskName { get; set; } = string.Empty;
         public bool Completed { get; set; }
         public int CategoryID { get; set; }
