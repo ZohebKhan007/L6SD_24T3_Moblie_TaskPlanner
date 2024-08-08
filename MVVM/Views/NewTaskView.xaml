@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TaskPlanner.MVVM.Views.NewTaskView"
              Title="Add New Task">
-    
+
     <Grid RowDefinitions=".2*, .7*, .1*">
         <Entry 
             Placeholder="Enter New Task" 
@@ -17,15 +17,23 @@
                 <GridItemsLayout
                     HorizontalItemSpacing="5"
                     Orientation="Vertical"
-                    Span="2"
+                    Span="1"
                     VerticalItemSpacing="5"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame>
-                        <RadioButton Content="{Binding CategoryName}"
-                                     GroupName="Category"
-                                     IsChecked="{Binding IsSelected}"/>
+                        <Grid>
+                            <RadioButton 
+                                Content="{Binding CategoryName}"
+                                GroupName="Category"
+                                IsChecked="{Binding IsSelected}"/>
+                            <Button 
+                                Text="-" 
+                                HorizontalOptions="End" 
+                                Clicked="DeleteCategoryClicked"
+                                CommandParameter="{Binding Id}" />
+                        </Grid>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
@@ -40,5 +48,5 @@
             <Button CornerRadius="15" Text="Add Category" Clicked="AddCategoryClicked"/>
         </HorizontalStackLayout>
     </Grid>
-    
+
 </ContentPage>
