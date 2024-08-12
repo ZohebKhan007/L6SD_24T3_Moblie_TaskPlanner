@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using TaskPlanner.MVVM.Views;
 using TaskPlanner.Services;
 
@@ -25,7 +25,7 @@ namespace TaskPlanner
             // Register the DatabaseView
             builder.Services.AddSingleton<DatabaseService>();
             // Register the MainView with the DatabaseService Dependency
-            builder.Services.AddTransient<MainView>();
+            builder.Services.AddTransient<PrivacyPrinciples>();
 
             return builder.Build();
         }
