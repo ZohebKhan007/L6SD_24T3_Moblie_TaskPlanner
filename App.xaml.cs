@@ -1,4 +1,4 @@
-﻿using TaskPlanner.MVVM.Views;
+using TaskPlanner.MVVM.Views;
 
 namespace TaskPlanner
 {
@@ -8,7 +8,7 @@ namespace TaskPlanner
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(serviceProvider.GetRequiredService<LandingPage>());
+            MainPage = new NavigationPage(serviceProvider.GetRequiredService<PrivacyPrinciples>());
         }
     }
 }
